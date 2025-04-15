@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your IP and Location Information</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .info-card {
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 15px;
+            background-color: #f9f9f9;
+        }
+        .info-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #555;
+        }
+        .info-value {
+            font-size: 18px;
+            color: #333;
+            word-break: break-word;
+        }
+        .loading {
+            text-align: center;
+            padding: 40px;
+            font-size: 18px;
+            color: #777;
+        }
+        .error {
+            color: #d9534f;
+            text-align: center;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Your IP and Location Information</h1>
+        <div id="result">
+            <div class="loading">Loading your information...</div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const resultContainer = document.getElementById('result');
+            
+            // Fetch IP and location information
+            fetch('https://ipapi.co/json/')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Create an info grid to display the data
+                    const infoGrid = document.createElement('div');
+                    infoGrid.className = 'info-grid';
+                    
+                    // Define the information fields to display
+                    const fields = [
+                        { key: 'ip', label: 'IP Address' },
+                        { key: 'city', label: 'City' },
+                        { key: 'region', label: 'Region/State' },
+                        { key: 'country_name', label: 'Country' },
+                        { key: 'postal', label: 'Postal/ZIP Code' },
+                        { key: 'latitude', label: 'Latitude' },
+                        { key: 'longitude', label: 'Longitude' },
+                        { key: 'timezone', label: 'Timezone' },
+                        { key: 'utc_offset', label: 'UTC Offset' },
+                        { key: 'country_calling_code', label: 'Country Calling Code' },
+                        { key: 'currency', label: 'Currency' },
+                        { key: 'languages', label: 'Languages' },
+                        { key: 'org', label: 'Organization' },
+                        { key: 'asn', label: 'ASN' }
+                    ];
+                    
+                    // Create a card for each information field
+                    fields.forEach(field => {
+                        if (data[field.key]) {
+                            const card = document.createElement('div');
+                            card.className = 'info-card';
+                            
+                            const title = document.createElement('div');
+                            title.className = 'info-title';
+                            title.textContent = field.label;
+                            
+                            const value = document.createElement('div');
+                            value.className = 'info-value';
+                            value.textContent = data[field.key];
+                            
+                            card.appendChild(title);
+                            card.appendChild(value);
+                            infoGrid.appendChild(card);
+                        }
+                    });
+                    
+                    // Replace loading indicator with actual data
+                    resultContainer.innerHTML = '';
+                    resultContainer.appendChild(infoGrid);
+                })
+                .catch(error => {
+                    resultContainer.innerHTML = `
+                        <div class="error">
+                            <p>Error fetching your information: ${error.message}</p>
+                            <p>This might be due to an ad blocker or privacy extension blocking the API request.</p>
+                        </div>
+                    `;
+                });
+        });
+    </script>
+</body>
+</html>

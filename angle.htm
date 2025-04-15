@@ -1,0 +1,1252 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tuto - Angles</title>
+    <link rel="icon" type="image/x-icon" href="https://file.garden/Z43SqDt67TpUFO8v/zoomlearnblastfavi">
+    <style>
+        :root {
+            --primary: #4a6fa5;
+            --secondary: #166088;
+            --accent: #03a9f4;
+            --light: #e1e2e3;
+            --dark: #333;
+            --success: #4CAF50;
+            --error: #f44336;
+            --warning: #ff9800;
+        }
+
+        * {
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            color: var(--dark);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1, h2, h3 {
+            color: var(--primary);
+            text-align: center;
+        }
+
+        button {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 10px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        button:hover {
+            background-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        input, select {
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            width: 100%;
+        }
+
+        .welcome-screen, .test-screen, .results-screen, .assignments-screen, .improvement-screen {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            margin: 20px 0;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 0.5s forwards;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .question {
+            margin: 20px 0;
+            padding: 15px;
+            background: var(--light);
+            border-radius: 8px;
+            animation: slideIn 0.5s forwards;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .assignment-item {
+            background: var(--light);
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 8px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .assignment-item:hover {
+            transform: scale(1.02);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .assignment-item.completed {
+            background: #e8f5e9;
+            border-left: 5px solid var(--success);
+        }
+
+        .progress-bar {
+            height: 10px;
+            background: #ddd;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: var(--accent);
+            border-radius: 5px;
+            width: 0%;
+            transition: width 1s ease;
+        }
+
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 4px;
+        }
+
+        .result-item.correct {
+            background-color: rgba(76, 175, 80, 0.2);
+        }
+
+        .result-item.incorrect {
+            background-color: rgba(244, 67, 54, 0.2);
+        }
+
+        .shake {
+            animation: shake 0.5s forwards;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+
+        .bounce {
+            animation: bounce 0.5s forwards;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-20px); }
+            60% { transform: translateY(-10px); }
+        }
+
+        .pulse {
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .rotate-in {
+            animation: rotateIn 0.5s forwards;
+        }
+
+        @keyframes rotateIn {
+            from { transform: rotate(-10deg); opacity: 0; }
+            to { transform: rotate(0); opacity: 1; }
+        }
+
+        .feedback {
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            color: white;
+        }
+
+        .feedback.positive {
+            background-color: var(--success);
+        }
+
+        .feedback.negative {
+            background-color: var(--error);
+        }
+
+        /* Angle-specific styles */
+        .angle-diagram {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .angle-line {
+            position: absolute;
+            top: 100px;
+            left: 100px;
+            width: 80px;
+            height: 2px;
+            background-color: black;
+            transform-origin: 0 0;
+        }
+
+        .angle-arc {
+            position: absolute;
+            top: 100px;
+            left: 100px;
+            width: 30px;
+            height: 30px;
+            border: 2px solid var(--accent);
+            border-radius: 50%;
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+            transform-origin: 0 0;
+        }
+        
+        .angle-measure {
+            position: absolute;
+            top: 70px;
+            left: 120px;
+            font-weight: bold;
+            color: var(--accent);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Welcome Screen -->
+        <div class="welcome-screen" id="welcomeScreen">
+            <h1>Tuto</h1>
+            <p>Welcome! Enter your name to start improving your angle mathematics skills.</p>
+            <input type="text" id="userName" placeholder="Enter your name">
+            <button id="startButton">Get Started</button>
+        </div>
+
+        <!-- Test Screen -->
+        <div class="test-screen hidden" id="testScreen">
+            <h2>Angle Mathematics Test</h2>
+            <p>Complete the following questions about angles to assess your skills.</p>
+            <div id="questionsContainer"></div>
+            <button id="submitTest">Submit Test</button>
+        </div>
+
+        <!-- Results Screen -->
+        <div class="results-screen hidden" id="resultsScreen">
+            <h2>Test Results</h2>
+            <div id="resultsContainer"></div>
+            <div class="progress-bar">
+                <div class="progress-bar-fill" id="resultProgressBar"></div>
+            </div>
+            <p>Based on your results, we've created personalized assignments for you.</p>
+            <button id="viewAssignments">View Assignments</button>
+        </div>
+
+        <!-- Assignments Screen -->
+        <div class="assignments-screen hidden" id="assignmentsScreen">
+            <h2>Your Assignments</h2>
+            <p id="welcomeMessage"></p>
+            <div class="progress-bar">
+                <div class="progress-bar-fill" id="assignmentProgressBar"></div>
+            </div>
+            <div id="assignmentsContainer"></div>
+            <button id="retakeTest" class="hidden">Retake Test</button>
+        </div>
+
+        <!-- Improvement Screen -->
+        <div class="improvement-screen hidden" id="improvementScreen">
+            <h2>Your Improvement</h2>
+            <div id="improvementContainer"></div>
+            <div id="feedbackMessage" class="feedback"></div>
+            <button id="startOver">Start Over</button>
+        </div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const welcomeScreen = document.getElementById('welcomeScreen');
+        const testScreen = document.getElementById('testScreen');
+        const resultsScreen = document.getElementById('resultsScreen');
+        const assignmentsScreen = document.getElementById('assignmentsScreen');
+        const improvementScreen = document.getElementById('improvementScreen');
+        const userName = document.getElementById('userName');
+        const startButton = document.getElementById('startButton');
+        const questionsContainer = document.getElementById('questionsContainer');
+        const submitTestButton = document.getElementById('submitTest');
+        const resultsContainer = document.getElementById('resultsContainer');
+        const viewAssignmentsButton = document.getElementById('viewAssignments');
+        const welcomeMessage = document.getElementById('welcomeMessage');
+        const assignmentsContainer = document.getElementById('assignmentsContainer');
+        const retakeTestButton = document.getElementById('retakeTest');
+        const resultProgressBar = document.getElementById('resultProgressBar');
+        const assignmentProgressBar = document.getElementById('assignmentProgressBar');
+        const improvementContainer = document.getElementById('improvementContainer');
+        const feedbackMessage = document.getElementById('feedbackMessage');
+        const startOverButton = document.getElementById('startOver');
+
+        // App State
+        let state = {
+            name: '',
+            currentTest: [],
+            testResults: [],
+            assignments: [],
+            completedAssignments: [],
+            initialScore: 0,
+            finalScore: 0,
+            testAttempts: 0
+        };
+
+        // Check for existing data in localStorage
+        function loadSavedData() {
+            const savedData = localStorage.getItem('angleMathAppData');
+            if (savedData) {
+                state = JSON.parse(savedData);
+                if (state.name && state.assignments.length > 0) {
+                    userName.value = state.name;
+                    showScreen(assignmentsScreen);
+                    renderAssignments();
+                    updateAssignmentProgress();
+                }
+            }
+        }
+
+        // Save data to localStorage
+        function saveData() {
+            localStorage.setItem('angleMathAppData', JSON.stringify(state));
+        }
+
+        // Show a specific screen and hide others
+        function showScreen(screen) {
+            welcomeScreen.classList.add('hidden');
+            testScreen.classList.add('hidden');
+            resultsScreen.classList.add('hidden');
+            assignmentsScreen.classList.add('hidden');
+            improvementScreen.classList.add('hidden');
+            
+            screen.classList.remove('hidden');
+        }
+
+        // Generate random angle problems
+        function generateAngleProblems(count = 10) {
+            const problemTypes = [
+                'complementary', 
+                'supplementary', 
+                'vertical', 
+                'interior', 
+                'exterior',
+                'conversion',
+                'triangle',
+                'straight',
+                'right',
+                'reflex'
+            ];
+            
+            const problems = [];
+            
+            for (let i = 0; i < count; i++) {
+                const problemType = problemTypes[Math.floor(Math.random() * problemTypes.length)];
+                let question, answer, options;
+                
+                switch (problemType) {
+                    case 'complementary':
+                        const angle1 = Math.floor(Math.random() * 89) + 1;
+                        answer = 90 - angle1;
+                        question = `If an angle measures ${angle1}°, what is its complementary angle?`;
+                        break;
+                    
+                    case 'supplementary':
+                        const angle2 = Math.floor(Math.random() * 179) + 1;
+                        answer = 180 - angle2;
+                        question = `If an angle measures ${angle2}°, what is its supplementary angle?`;
+                        break;
+                    
+                    case 'vertical':
+                        const verticalAngle = Math.floor(Math.random() * 180) + 1;
+                        answer = verticalAngle;
+                        question = `If two angles are vertical angles, and one measures ${verticalAngle}°, what is the measure of the other angle?`;
+                        break;
+                    
+                    case 'interior':
+                        const exteriorAngle = Math.floor(Math.random() * 60) + 100;
+                        answer = 180 - exteriorAngle;
+                        question = `If the exterior angle of a triangle is ${exteriorAngle}°, what is the opposite interior angle?`;
+                        break;
+                        
+                    case 'exterior':
+                        const interiorAngle1 = Math.floor(Math.random() * 60) + 10;
+                        const interiorAngle2 = Math.floor(Math.random() * 60) + 10;
+                        answer = 180 - (interiorAngle1 + interiorAngle2);
+                        question = `In a triangle, if two interior angles measure ${interiorAngle1}° and ${interiorAngle2}°, what is the third angle?`;
+                        break;
+                        
+                    case 'conversion':
+                        const degrees = Math.floor(Math.random() * 360);
+                        answer = Math.round((degrees * Math.PI / 180) * 100) / 100;
+                        question = `Convert ${degrees}° to radians (round to 2 decimal places).`;
+                        break;
+                        
+                    case 'triangle':
+                        const triangleAngle1 = Math.floor(Math.random() * 60) + 10;
+                        const triangleAngle2 = Math.floor(Math.random() * 60) + 10;
+                        answer = 180 - triangleAngle1 - triangleAngle2;
+                        question = `In a triangle, if two angles measure ${triangleAngle1}° and ${triangleAngle2}°, what is the third angle?`;
+                        break;
+                        
+                    case 'straight':
+                        const straightAngle1 = Math.floor(Math.random() * 120) + 30;
+                        const straightAngle2 = Math.floor(Math.random() * 60) + 10;
+                        answer = 180 - straightAngle1 - straightAngle2;
+                        question = `In a straight line, if two angles measure ${straightAngle1}° and ${straightAngle2}°, what is the third angle?`;
+                        break;
+                        
+                    case 'right':
+                        const hypotenuse = Math.floor(Math.random() * 10) + 5;
+                        const adjacent = Math.floor(Math.random() * 5) + 2;
+                        const opposite = Math.sqrt(hypotenuse * hypotenuse - adjacent * adjacent);
+                        answer = Math.round(Math.atan(opposite / adjacent) * 180 / Math.PI);
+                        question = `In a right triangle with hypotenuse ${hypotenuse} and adjacent side ${adjacent}, what is the angle (in degrees, rounded to the nearest degree)?`;
+                        break;
+                        
+                    case 'reflex':
+                        const regularAngle = Math.floor(Math.random() * 180);
+                        answer = 360 - regularAngle;
+                        question = `If an angle measures ${regularAngle}°, what is its reflex angle?`;
+                        break;
+                }
+                
+                problems.push({
+                    type: problemType,
+                    question,
+                    answer,
+                    id: `q${i}`,
+                    userAnswer: null
+                });
+            }
+            
+            return problems;
+        }
+
+        // Render the test questions
+        function renderTest() {
+            state.currentTest = generateAngleProblems();
+            questionsContainer.innerHTML = '';
+            
+            state.currentTest.forEach((problem, index) => {
+                const questionElement = document.createElement('div');
+                questionElement.classList.add('question');
+                questionElement.style.animationDelay = `${index * 0.1}s`;
+                
+                // Create angle visualization for certain problem types
+                let angleVisualization = '';
+                if (['complementary', 'supplementary', 'vertical', 'triangle', 'straight', 'right'].includes(problem.type)) {
+                    angleVisualization = `
+                        <div class="angle-diagram">
+                            <div class="angle-line" style="transform: rotate(0deg);"></div>
+                            <div class="angle-line" id="movingLine-${problem.id}" style="transform: rotate(45deg);"></div>
+                            <div class="angle-arc" id="angleArc-${problem.id}"></div>
+                            <div class="angle-measure" id="angleMeasure-${problem.id}">?°</div>
+                        </div>
+                    `;
+                }
+                
+                questionElement.innerHTML = `
+                    <h3>Question ${index + 1}</h3>
+                    <p>${problem.question}</p>
+                    ${angleVisualization}
+                    <input type="number" id="${problem.id}" placeholder="Your answer" step="any">
+                `;
+                
+                questionsContainer.appendChild(questionElement);
+                
+                // Set up angle visualization if it exists
+                if (['complementary', 'supplementary', 'vertical', 'triangle', 'straight', 'right'].includes(problem.type)) {
+                    const movingLine = document.getElementById(`movingLine-${problem.id}`);
+                    const angleArc = document.getElementById(`angleArc-${problem.id}`);
+                    const angleMeasure = document.getElementById(`angleMeasure-${problem.id}`);
+                    
+                    // Get angle based on problem type
+                    let displayAngle;
+                    switch (problem.type) {
+                        case 'complementary':
+                            displayAngle = parseInt(problem.question.match(/(\d+)°/)[1]);
+                            break;
+                        case 'supplementary':
+                            displayAngle = parseInt(problem.question.match(/(\d+)°/)[1]);
+                            break;
+                        case 'vertical':
+                            displayAngle = parseInt(problem.question.match(/(\d+)°/)[1]);
+                            break;
+                        case 'triangle':
+                        case 'straight':
+                            displayAngle = 60; // Example angle
+                            break;
+                        case 'right':
+                            displayAngle = 90;
+                            break;
+                        default:
+                            displayAngle = 45;
+                    }
+                    
+                    // Set the display angle
+                    movingLine.style.transform = `rotate(${displayAngle}deg)`;
+                    angleMeasure.textContent = `${displayAngle}°`;
+                    
+                    // Adjust arc display
+                    if (displayAngle > 180) {
+                        angleArc.style.clipPath = 'polygon(0 0, 100% 0, 100% 100%, 0 100%)';
+                    } else {
+                        angleArc.style.clipPath = `polygon(0 0, 100% 0, 100% 100%, 0% 100%)`;
+                    }
+                }
+            });
+        }
+
+        // Grade the test
+        function gradeTest() {
+            state.testResults = [];
+            let correctCount = 0;
+            
+            state.currentTest.forEach(problem => {
+                const inputElement = document.getElementById(problem.id);
+                problem.userAnswer = parseFloat(inputElement.value);
+                
+                // For radian answers, allow a small margin of error
+                let isCorrect;
+                if (problem.type === 'conversion') {
+                    isCorrect = Math.abs(problem.userAnswer - problem.answer) < 0.02;
+                } else {
+                    isCorrect = problem.userAnswer === problem.answer;
+                }
+                
+                if (isCorrect) correctCount++;
+                
+                state.testResults.push({
+                    problem,
+                    isCorrect
+                });
+            });
+            
+            const score = Math.round((correctCount / state.currentTest.length) * 100);
+            
+            if (state.testAttempts === 0) {
+                state.initialScore = score;
+            } else {
+                state.finalScore = score;
+            }
+            
+            state.testAttempts++;
+            
+            return {
+                score,
+                correctCount,
+                totalCount: state.currentTest.length
+            };
+        }
+
+        // Render test results
+        function renderResults(results) {
+            resultsContainer.innerHTML = `
+                <h3>Score: ${results.score}%</h3>
+                <p>You got ${results.correctCount} out of ${results.totalCount} questions correct.</p>
+            `;
+            
+            state.testResults.forEach((result, index) => {
+                const resultItem = document.createElement('div');
+                resultItem.classList.add('result-item');
+                resultItem.classList.add(result.isCorrect ? 'correct' : 'incorrect');
+                
+                resultItem.innerHTML = `
+                    <div>${result.problem.question}</div>
+                    <div>Your answer: ${result.problem.userAnswer} (${result.isCorrect ? 'Correct' : 'Incorrect, correct answer: ' + result.problem.answer})</div>
+                `;
+                
+                resultsContainer.appendChild(resultItem);
+                
+                setTimeout(() => {
+                    resultItem.classList.add('rotate-in');
+                }, index * 100);
+            });
+            
+            resultProgressBar.style.width = `${results.score}%`;
+            
+            setTimeout(() => {
+                generateAssignments();
+            }, 500);
+        }
+
+        // Generate personalized assignments based on test results
+        function generateAssignments() {
+            const wrongCategories = {};
+            
+            state.testResults.forEach(result => {
+                if (!result.isCorrect) {
+                    if (!wrongCategories[result.problem.type]) {
+                        wrongCategories[result.problem.type] = 0;
+                    }
+                    wrongCategories[result.problem.type]++;
+                }
+            });
+            
+            state.assignments = [];
+            
+            // Add assignments for each problem type with wrong answers
+            for (const [type, count] of Object.entries(wrongCategories)) {
+                const problems = count * 2; // Double the number of practice problems
+                
+                let typeName;
+                switch (type) {
+                    case 'complementary': typeName = 'Complementary Angles'; break;
+                    case 'supplementary': typeName = 'Supplementary Angles'; break;
+                    case 'vertical': typeName = 'Vertical Angles'; break;
+                    case 'interior': typeName = 'Interior Angles'; break;
+                    case 'exterior': typeName = 'Exterior Angles'; break;
+                    case 'conversion': typeName = 'Degree-Radian Conversion'; break;
+                    case 'triangle': typeName = 'Triangle Angles'; break;
+                    case 'straight': typeName = 'Straight Line Angles'; break;
+                    case 'right': typeName = 'Right Triangle Angles'; break;
+                    case 'reflex': typeName = 'Reflex Angles'; break;
+                }
+                
+                state.assignments.push({
+                    id: `assignment-${type}`,
+                    title: `${typeName} Practice`,
+                    description: `Practice ${typeName.toLowerCase()} with ${problems} problems.`,
+                    problems: generateProblemsForType(type, problems),
+                    completed: false
+                });
+            }
+            
+            // If there were no wrong answers or not enough assignments
+            if (state.assignments.length < 3) {
+                const problemTypes = [
+                    'complementary', 
+                    'supplementary', 
+                    'vertical', 
+                    'triangle',
+                    'conversion'
+                ];
+                
+                const missingCount = 3 - state.assignments.length;
+                
+                for (let i = 0; i < missingCount; i++) {
+                    const type = problemTypes[i % problemTypes.length];
+                    let typeName;
+                    
+                    switch (type) {
+                        case 'complementary': typeName = 'Complementary Angles'; break;
+                        case 'supplementary': typeName = 'Supplementary Angles'; break;
+                        case 'vertical': typeName = 'Vertical Angles'; break;
+                        case 'triangle': typeName = 'Triangle Angles'; break;
+                        case 'conversion': typeName = 'Degree-Radian Conversion'; break;
+                    }
+                    
+                    state.assignments.push({
+                        id: `assignment-extra-${i}`,
+                        title: `Extra ${typeName} Practice`,
+                        description: `Additional ${typeName.toLowerCase()} practice to improve your skills.`,
+                        problems: generateProblemsForType(type, 5),
+                        completed: false
+                    });
+                }
+            }
+            
+            state.completedAssignments = [];
+            saveData();
+        }
+
+        // Generate problems for a specific type
+        function generateProblemsForType(type, count) {
+            const problems = [];
+            
+            for (let i = 0; i < count; i++) {
+                let question, answer;
+                
+                switch (type) {
+                    case 'complementary':
+                        const angle1 = Math.floor(Math.random() * 89) + 1;
+                        answer = 90 - angle1;
+                        question = `If an angle measures ${angle1}°, what is its complementary angle?`;
+                        break;
+                    
+                    case 'supplementary':
+                        const angle2 = Math.floor(Math.random() * 179) + 1;
+                        answer = 180 - angle2;
+                        question = `If an angle measures ${angle2}°, what is its supplementary angle?`;
+                        break;
+                    
+                    case 'vertical':
+                        const verticalAngle = Math.floor(Math.random() * 180) + 1;
+                        answer = verticalAngle;
+                        question = `If two angles are vertical angles, and one measures ${verticalAngle}°, what is the measure of the other angle?`;
+                        break;
+                    
+                    case 'interior':
+                        const exteriorAngle = Math.floor(Math.random() * 60) + 100;
+                        answer = 180 - exteriorAngle;
+                        question = `If the exterior angle of a triangle is ${exteriorAngle}°, what is the opposite interior angle?`;
+                        break;
+                        
+                    case 'exterior':
+                        const interiorAngle1 = Math.floor(Math.random() * 60) + 10;
+                        const interiorAngle2 = Math.floor(Math.random() * 60) + 10;
+                        answer = 180 - (interiorAngle1 + interiorAngle2);
+                        question = `In a triangle, if two interior angles measure ${interiorAngle1}° and ${interiorAngle2}°, what is the third angle?`;
+                        break;
+                        
+                    case 'conversion':
+                        const degrees = Math.floor(Math.random() * 360);
+                        answer = Math.round((degrees * Math.PI / 180) * 100) / 100;
+                        question = `Convert ${degrees}° to radians (round to 2 decimal places).`;
+                        break;
+                        
+                    case 'triangle':
+                        const triangleAngle1 = Math.floor(Math.random() * 60) + 10;
+                        const triangleAngle2 = Math.floor(Math.random() * 60) + 10;
+                        answer = 180 - triangleAngle1 - triangleAngle2;
+                        question = `In a triangle, if two angles measure ${triangleAngle1}° and ${triangleAngle2}°, what is the third angle?`;
+                        break;
+                        
+                    case 'straight':
+                        const straightAngle1 = Math.floor(Math.random() * 120) + 30;
+                        const straightAngle2 = Math.floor(Math.random() * 60) + 10;
+                        answer = 180 - straightAngle1 - straightAngle2;
+                        question = `In a straight line, if two angles measure ${straightAngle1}° and ${straightAngle2}°, what is the third angle?`;
+                        break;
+                        
+                    case 'right':
+                        const hypotenuse = Math.floor(Math.random() * 10) + 5;
+                        const adjacent = Math.floor(Math.random() * 5) + 2;
+                        const opposite = Math.sqrt(hypotenuse * hypotenuse - adjacent * adjacent);
+                        answer = Math.round(Math.atan(opposite / adjacent) * 180 / Math.PI);
+                        question = `In a right triangle with hypotenuse ${hypotenuse} and adjacent side ${adjacent}, what is the angle (in degrees, rounded to the nearest degree)?`;
+                        break;
+                        
+                    case 'reflex':
+                        const regularAngle = Math.floor(Math.random() * 180);
+                        answer = 360 - regularAngle;
+                        question = `If an angle measures ${regularAngle}°, what is its reflex angle?`;
+                        break;
+                }
+                
+                problems.push({
+                    type,
+                    question,
+                    answer
+                });
+            }
+            
+            return problems;
+        }
+
+        // Render assignments
+        function renderAssignments() {
+            welcomeMessage.textContent = `Hi, ${state.name}! Here are your assignments:`;
+            assignmentsContainer.innerHTML = '';
+            
+            state.assignments.forEach((assignment, index) => {
+                const assignmentElement = document.createElement('div');
+                assignmentElement.classList.add('assignment-item');
+                assignmentElement.style.animationDelay = `${index * 0.1}s`;
+                
+                if (state.completedAssignments.includes(assignment.id)) {
+                    assignmentElement.classList.add('completed');
+                }
+                
+                assignmentElement.innerHTML = `
+                    <h3>${assignment.title}</h3>
+                    <p>${assignment.description}</p>
+                    <button class="assignment-button" data-id="${assignment.id}">
+                        ${state.completedAssignments.includes(assignment.id) ? 'Review Assignment' : 'Start Assignment'}
+                    </button>
+                `;
+                
+                assignmentsContainer.appendChild(assignmentElement);
+                
+                setTimeout(() => {
+                    assignmentElement.classList.add('rotate-in');
+                }, index * 100);
+            });
+            
+            // Add event listeners to assignment buttons
+            const assignmentButtons = document.querySelectorAll('.assignment-button');
+            assignmentButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const assignmentId = button.getAttribute('data-id');
+                    startAssignment(assignmentId);
+                });
+            });
+            
+            // Show retake test button if all assignments are completed
+            if (state.completedAssignments.length === state.assignments.length && state.assignments.length > 0) {
+                retakeTestButton.classList.remove('hidden');
+            } else {
+                retakeTestButton.classList.add('hidden');
+            }
+        }
+
+        // Update assignment progress
+        function updateAssignmentProgress() {
+            const progress = state.completedAssignments.length / state.assignments.length * 100;
+            assignmentProgressBar.style.width = `${progress}%`;
+        }
+
+        // Start an assignment
+        function startAssignment(assignmentId) {
+            const assignment = state.assignments.find(a => a.id === assignmentId);
+            
+            // Create assignment modal
+            const modal = document.createElement('div');
+            modal.style.position = 'fixed';
+            modal.style.top = '0';
+            modal.style.left = '0';
+            modal.style.width = '100%';
+            modal.style.height = '100%';
+            modal.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
+            modal.style.display = 'flex';
+            modal.style.justifyContent = 'center';
+            modal.style.alignItems = 'center';
+            modal.style.zIndex = '1000';
+            
+            const modalContent = document.createElement('div');
+            modalContent.style.backgroundColor = 'white';
+            modalContent.style.padding = '30px';
+            modalContent.style.borderRadius = '8px';
+            modalContent.style.maxWidth = '80%';
+            modalContent.style.maxHeight = '80%';
+            modalContent.style.overflow = 'auto';
+            
+            modalContent.innerHTML = `
+                <h2>${assignment.title}</h2>
+                <p>${assignment.description}</p>
+                <div id="assignmentProblems"></div>
+                <button id="completeAssignment">Complete Assignment</button>
+                <button id="closeAssignment">Close</button>
+            `;
+            
+            modal.appendChild(modalContent);
+            document.body.appendChild(modal);
+            
+            // Render assignment problems
+            const problemsContainer = document.getElementById('assignmentProblems');
+            
+            assignment.problems.forEach((problem, index) => {
+                const problemElement = document.createElement('div');
+                problemElement.classList.add('question');
+                
+                // Create angle visualization for applicable problem types
+                let angleVisualization = '';
+                if (['complementary', 'supplementary', 'vertical', 'triangle', 'straight', 'right'].includes(problem.type)) {
+                    // Create a unique ID for this problem's visualization
+                    const visualId = `visual-${assignmentId}-${index}`;
+                    
+                    angleVisualization = `
+                        <div class="angle-diagram">
+                            <div class="angle-line" style="transform: rotate(0deg);"></div>
+                            <div class="angle-line" id="movingLine-${visualId}" style="transform: rotate(45deg);"></div>
+                            <div class="angle-arc" id="angleArc-${visualId}"></div>
+                            <div class="angle-measure" id="angleMeasure-${visualId}">?°</div>
+                        </div>
+                    `;
+                }
+                
+                problemElement.innerHTML = `
+                    <h3>Problem ${index + 1}</h3>
+                    <p>${problem.question}</p>
+                    ${angleVisualization}
+                    <input type="number" id="answer-${assignmentId}-${index}" placeholder="Your answer" step="any">
+                    <div id="feedback-${assignmentId}-${index}" class="feedback hidden"></div>
+                `;
+                
+                problemsContainer.appendChild(problemElement);
+                
+                // Setup angle visualization if applicable
+                if (['complementary', 'supplementary', 'vertical', 'triangle', 'straight', 'right'].includes(problem.type)) {
+                    const visualId = `visual-${assignmentId}-${index}`;
+                    const movingLine = document.getElementById(`movingLine-${visualId}`);
+                    const angleArc = document.getElementById(`angleArc-${visualId}`);
+                    const angleMeasure = document.getElementById(`angleMeasure-${visualId}`);
+                    
+                    // Extract angle information from the problem
+                    let displayAngle;
+                    const angleMatch = problem.question.match(/(\d+)°/);
+                    
+                    if (angleMatch) {
+                        displayAngle = parseInt(angleMatch[1]);
+                    } else {
+                        // Default angle display
+                        switch (problem.type) {
+                            case 'complementary': displayAngle = 30; break;
+                            case 'supplementary': displayAngle = 120; break;
+                            case 'vertical': displayAngle = 45; break;
+                            case 'triangle': displayAngle = 60; break;
+                            case 'straight': displayAngle = 60; break;
+                            case 'right': displayAngle = 90; break;
+                            default: displayAngle = 45;
+                        }
+                    }
+                    
+                    // Update the visualization
+                    movingLine.style.transform = `rotate(${displayAngle}deg)`;
+                    angleMeasure.textContent = `${displayAngle}°`;
+                    
+                    // Add animation for interactive feedback
+                    const answerInput = document.getElementById(`answer-${assignmentId}-${index}`);
+                    answerInput.addEventListener('input', (e) => {
+                        const userAngle = parseFloat(e.target.value) || 0;
+                        
+                        // Only update visualization for certain problem types
+                        if (['complementary', 'supplementary'].includes(problem.type)) {
+                            // For complementary/supplementary, show user's angle on diagram
+                            const secondLine = document.createElement('div');
+                            secondLine.classList.add('angle-line');
+                            secondLine.style.transform = `rotate(${userAngle}deg)`;
+                            secondLine.style.backgroundColor = 'var(--accent)';
+                            
+                            // Replace existing second line if any
+                            const existingSecondLine = document.getElementById(`secondLine-${visualId}`);
+                            if (existingSecondLine) {
+                                existingSecondLine.remove();
+                            }
+                            
+                            secondLine.id = `secondLine-${visualId}`;
+                            document.querySelector(`#movingLine-${visualId}`).parentNode.appendChild(secondLine);
+                        }
+                    });
+                }
+            });
+            
+            // Add event listeners to assignment buttons
+            document.getElementById('completeAssignment').addEventListener('click', () => {
+                let allCorrect = true;
+                
+                assignment.problems.forEach((problem, index) => {
+                    const answerInput = document.getElementById(`answer-${assignmentId}-${index}`);
+                    const userAnswer = parseFloat(answerInput.value);
+                    const feedbackElement = document.getElementById(`feedback-${assignmentId}-${index}`);
+                    
+                    // Check answer with tolerance for radian answers
+                    let isCorrect;
+                    if (problem.type === 'conversion') {
+                        isCorrect = Math.abs(userAnswer - problem.answer) < 0.02;
+                    } else {
+                        isCorrect = userAnswer === problem.answer;
+                    }
+                    
+                    feedbackElement.classList.remove('hidden', 'positive', 'negative');
+                    feedbackElement.classList.add(isCorrect ? 'positive' : 'negative');
+                    feedbackElement.textContent = isCorrect ? 'Correct!' : `Incorrect. The answer is ${problem.answer}.`;
+                    
+                    if (!isCorrect) allCorrect = false;
+                });
+                
+                if (allCorrect && !state.completedAssignments.includes(assignmentId)) {
+                    state.completedAssignments.push(assignmentId);
+                    saveData();
+                    renderAssignments();
+                    updateAssignmentProgress();
+                }
+            });
+            
+            document.getElementById('closeAssignment').addEventListener('click', () => {
+                document.body.removeChild(modal);
+            });
+        }
+
+        // Show improvement screen
+        function showImprovement() {
+            improvementContainer.innerHTML = `
+                <h3>Initial Test Score: ${state.initialScore}%</h3>
+                <h3>Final Test Score: ${state.finalScore}%</h3>
+                <div class="progress-bar">
+                    <div class="progress-bar-fill" style="width: ${state.initialScore}%; background-color: var(--warning);"></div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-bar-fill" style="width: ${state.finalScore}%; background-color: var(--success);"></div>
+                </div>
+            `;
+            
+            const improvement = state.finalScore - state.initialScore;
+            
+            if (improvement > 0) {
+                feedbackMessage.textContent = `Great job! You improved by ${improvement}%!`;
+                feedbackMessage.classList.add('positive');
+                feedbackMessage.classList.remove('negative');
+            } else if (improvement === 0) {
+                feedbackMessage.textContent = `You maintained your score of ${state.finalScore}%. Keep practicing to improve!`;
+                feedbackMessage.classList.remove('positive', 'negative');
+            } else {
+                feedbackMessage.textContent = `You scored ${Math.abs(improvement)}% lower. Let's keep practicing!`;
+                feedbackMessage.classList.add('negative');
+                feedbackMessage.classList.remove('positive');
+            }
+        }
+
+        // Event Listeners
+        startButton.addEventListener('click', () => {
+            if (userName.value.trim() === '') {
+                userName.classList.add('shake');
+                setTimeout(() => {
+                    userName.classList.remove('shake');
+                }, 500);
+                return;
+            }
+            
+            state.name = userName.value;
+            showScreen(testScreen);
+            renderTest();
+        });
+
+        submitTestButton.addEventListener('click', () => {
+            const results = gradeTest();
+            showScreen(resultsScreen);
+            renderResults(results);
+        });
+
+        viewAssignmentsButton.addEventListener('click', () => {
+            showScreen(assignmentsScreen);
+            renderAssignments();
+            updateAssignmentProgress();
+        });
+
+        retakeTestButton.addEventListener('click', () => {
+            showScreen(testScreen);
+            renderTest();
+        });
+
+        startOverButton.addEventListener('click', () => {
+            // Reset state
+            state = {
+                name: state.name,
+                currentTest: [],
+                testResults: [],
+                assignments: [],
+                completedAssignments: [],
+                initialScore: 0,
+                finalScore: 0,
+                testAttempts: 0
+            };
+            
+            saveData();
+            showScreen(testScreen);
+            renderTest();
+        });
+
+        // Additional Angle Math Functions
+
+        // Convert degrees to radians
+        function degreesToRadians(degrees) {
+            return degrees * Math.PI / 180;
+        }
+
+        // Convert radians to degrees
+        function radiansToDegrees(radians) {
+            return radians * 180 / Math.PI;
+        }
+
+        // Calculate complementary angle
+        function complementaryAngle(angle) {
+            return 90 - angle;
+        }
+
+        // Calculate supplementary angle
+        function supplementaryAngle(angle) {
+            return 180 - angle;
+        }
+
+        // Calculate third angle in a triangle
+        function triangleThirdAngle(angle1, angle2) {
+            return 180 - angle1 - angle2;
+        }
+
+        // Calculate angle using trigonometry (opposite/hypotenuse)
+        function sineAngle(opposite, hypotenuse) {
+            return radiansToDegrees(Math.asin(opposite / hypotenuse));
+        }
+
+        // Calculate angle using trigonometry (adjacent/hypotenuse)
+        function cosineAngle(adjacent, hypotenuse) {
+            return radiansToDegrees(Math.acos(adjacent / hypotenuse));
+        }
+
+        // Calculate angle using trigonometry (opposite/adjacent)
+        function tangentAngle(opposite, adjacent) {
+            return radiansToDegrees(Math.atan(opposite / adjacent));
+        }
+
+        // Calculate the reflex angle of a given angle
+        function reflexAngle(angle) {
+            return 360 - angle;
+        }
+
+        // Interactive Angle Visualizer - Add to the application
+        function createAngleVisualizer() {
+            // Create and append the visualizer to the document body
+            const visualizer = document.createElement('div');
+            visualizer.id = 'angleVisualizer';
+            visualizer.style.position = 'fixed';
+            visualizer.style.bottom = '20px';
+            visualizer.style.right = '20px';
+            visualizer.style.width = '300px';
+            visualizer.style.backgroundColor = 'white';
+            visualizer.style.padding = '15px';
+            visualizer.style.borderRadius = '8px';
+            visualizer.style.boxShadow = '0 4px 10px rgba(0,0,0,0.2)';
+            visualizer.style.zIndex = '100';
+            
+            visualizer.innerHTML = `
+                <h3>Angle Visualizer</h3>
+                <div class="angle-diagram" style="margin: 20px auto;">
+                    <div class="angle-line" style="transform: rotate(0deg);"></div>
+                    <div class="angle-line" id="visualizerMovingLine" style="transform: rotate(45deg);"></div>
+                    <div class="angle-arc" id="visualizerAngleArc"></div>
+                    <div class="angle-measure" id="visualizerAngleMeasure">45°</div>
+                </div>
+                <input type="range" id="angleSlider" min="0" max="360" value="45" step="1">
+                <div style="display: flex; justify-content: space-between; margin-top: 10px;">
+                    <div>
+                        <p>Complementary: <span id="complementaryValue">45°</span></p>
+                        <p>Supplementary: <span id="supplementaryValue">135°</span></p>
+                    </div>
+                    <div>
+                        <p>Radians: <span id="radianValue">0.79</span></p>
+                        <p>Reflex: <span id="reflexValue">315°</span></p>
+                    </div>
+                </div>
+                <button id="closeVisualizer" style="margin-top: 10px;">Close</button>
+            `;
+            
+            document.body.appendChild(visualizer);
+            
+            // Add event listeners
+            const angleSlider = document.getElementById('angleSlider');
+            const movingLine = document.getElementById('visualizerMovingLine');
+            const angleMeasure = document.getElementById('visualizerAngleMeasure');
+            const complementaryValue = document.getElementById('complementaryValue');
+            const supplementaryValue = document.getElementById('supplementaryValue');
+            const radianValue = document.getElementById('radianValue');
+            const reflexValue = document.getElementById('reflexValue');
+            const closeButton = document.getElementById('closeVisualizer');
+            
+            angleSlider.addEventListener('input', (e) => {
+                const angle = parseInt(e.target.value);
+                
+                // Update the visualizer
+                movingLine.style.transform = `rotate(${angle}deg)`;
+                angleMeasure.textContent = `${angle}°`;
+                
+                // Update related angle values
+                complementaryValue.textContent = `${angle < 90 ? (90 - angle) : 'N/A'}°`;
+                supplementaryValue.textContent = `${angle < 180 ? (180 - angle) : 'N/A'}°`;
+                radianValue.textContent = `${(angle * Math.PI / 180).toFixed(2)}`;
+                reflexValue.textContent = `${(360 - angle)}°`;
+            });
+            
+            closeButton.addEventListener('click', () => {
+                document.body.removeChild(visualizer);
+            });
+        }
+
+        // Add a button to create the angle visualizer
+        function addVisualizerButton() {
+            const button = document.createElement('button');
+            button.textContent = 'Open Angle Visualizer';
+            button.style.position = 'fixed';
+            button.style.bottom = '20px';
+            button.style.right = '20px';
+            button.style.zIndex = '99';
+            button.style.backgroundColor = 'var(--accent)';
+            button.style.color = 'white';
+            button.style.border = 'none';
+            button.style.padding = '10px 15px';
+            button.style.borderRadius = '4px';
+            button.style.cursor = 'pointer';
+            
+            button.addEventListener('click', () => {
+                createAngleVisualizer();
+                document.body.removeChild(button);
+            });
+            
+            document.body.appendChild(button);
+        }
+
+        // Initialize
+        loadSavedData();
+        addVisualizerButton();
+    </script>
+    <div class="sidebar">
+        <h2>Personalization</h2>
+        <label for="theme">Theme:</label>
+        <select id="theme">
+            <option value="light">Light</option>
+            <option value="dark">Dark</option>
+        </select>
+        
+        <label for="font-size">Font Size:</label>
+        <select id="font-size">
+            <option value="small">Small</option>
+            <option value="medium" selected>Medium</option>
+            <option value="large">Large</option>
+        </select>
+    </div>
+    <script>
+        document.getElementById('theme').addEventListener('change', function() {
+            document.body.classList.toggle('dark-theme', this.value === 'dark');
+        });
+
+        document.getElementById('font-size').addEventListener('change', function() {
+            let size = this.value;
+            if (size === 'small') {
+                document.body.style.fontSize = '12px';
+            } else if (size === 'medium') {
+                document.body.style.fontSize = '16px';
+            } else {
+                document.body.style.fontSize = '20px';
+            }
+        });
+    </script>
+</body>
+</html>
